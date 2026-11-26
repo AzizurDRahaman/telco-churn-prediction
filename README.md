@@ -42,7 +42,7 @@ A telecom company loses roughly one in four customers. Keeping an existing custo
    Each proxy was scored 1 to 4 by quartile, combined into an RFM score, and grouped into Low / Mid / High value segments.
 4. **Modeling:** XGBoost classifier (`n_estimators=300`, `max_depth=7`, `learning_rate=0.05`, `random_state=42`), with categorical columns handled natively (`enable_categorical=True`) instead of one-hot encoding. No class weighting or resampling was applied, so the model was trained on the original ~26% churn rate and evaluated at the default 0.5 threshold.
 5. **Evaluation:** accuracy, recall, precision, ROC-AUC and PR-AUC on a held-out test set, plus stratified 5-fold cross-validation. Evaluated at the default 0.5 decision threshold; tuning the threshold for higher recall is listed under future work.
-6. **Explainability:** XGBoost feature importance [and SHAP values].
+6. **Explainability:** XGBoost feature importance and SHAP values (TreeExplainer summary plot).
 7. **Business impact:** simplified customer lifetime value (CLV), revenue at risk, targeting analysis, and a decision table (retention offer / low-cost outreach / early access / leave alone).
 
 ## 4. Results
@@ -129,14 +129,8 @@ A churn model predicts who will leave, not who will respond to an offer. To meas
 ```
 telco-churn-prediction/
 ├── README.md
-├── requirements.txt
-├── .gitignore
-├── notebooks/
-│   └── telco_churn_analysis.ipynb
-├── images/              # charts used in this README
-├── data/                # place the Kaggle CSV here (not tracked)
-├── models/              # optional: saved pipeline (churn_pipeline.joblib)
-└── app/                 # optional: Streamlit app
+├── telco-churn-prediction.ipynb   # full analysis: cleaning, EDA, segmentation, model, SHAP, business impact
+└── confusion_matrix.png
 ```
 
 ## 11. How to run
@@ -144,13 +138,10 @@ telco-churn-prediction/
 ```bash
 git clone https://github.com/AzizurDRahaman/telco-churn-prediction.git
 cd telco-churn-prediction
-python -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+pip install pandas numpy scikit-learn xgboost shap matplotlib seaborn
 ```
-
-1. Download the dataset from [Kaggle](https://www.kaggle.com/datasets/blastchar/telco-customer-churn) and save it as `data/WA_Fn-UseC_-Telco-Customer-Churn.csv`.
-2. Open `notebooks/telco_churn_analysis.ipynb` and run all cells (update the CSV path in the first cells if needed).
+1. Download the dataset from [Kaggle](https://www.kaggle.com/datasets/blastchar/telco-customer-churn).
+2. Open `telco-churn-prediction.ipynb`, update the CSV path in the first cells, and run all cells.
 
 ## 12. Limitations
 
