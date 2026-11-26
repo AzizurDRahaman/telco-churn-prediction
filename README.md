@@ -40,7 +40,7 @@ A telecom company loses roughly one in four customers. Keeping an existing custo
    | Monetary | `MonthlyCharges` |
 
    Each proxy was scored 1 to 4 by quartile, combined into an RFM score, and grouped into Low / Mid / High value segments.
-4. **Modeling:** XGBoost classifier. [FILL IN: the settings you actually used, e.g. max_depth, learning_rate, n_estimators, any class weighting]. Compared against a logistic regression baseline. [FILL IN: baseline result, or delete this sentence if you did not run one]
+4. **Modeling:** XGBoost classifier (`n_estimators=300`, `max_depth=7`, `learning_rate=0.05`, `random_state=42`), with categorical columns handled natively (`enable_categorical=True`) instead of one-hot encoding. No class weighting or resampling was applied, so the model was trained on the original ~26% churn rate and evaluated at the default 0.5 threshold.
 5. **Evaluation:** accuracy, recall, precision, ROC-AUC and PR-AUC on a held-out test set, plus stratified 5-fold cross-validation. Evaluated at the default 0.5 decision threshold; tuning the threshold for higher recall is listed under future work.
 6. **Explainability:** XGBoost feature importance [and SHAP values].
 7. **Business impact:** simplified customer lifetime value (CLV), revenue at risk, targeting analysis, and a decision table (retention offer / low-cost outreach / early access / leave alone).
@@ -123,12 +123,6 @@ A churn model shows who is likely to leave, not who will respond to an offer, so
 
 A churn model predicts who will leave, not who will respond to an offer. To measure whether an offer works, randomise the high-risk group into treatment and control and compare churn over a fixed period. Sample size from a power analysis (5% significance, 80% power, detecting a drop from 40% to 34%): about **1,000 customers per group**. Results should be analysed by segment (for example new vs loyal customers).
 
-### If this ran in production
-
-- **Retraining:** [FILL IN: e.g. monthly, or when monitored recall drops below X]
-- **Monitoring:** track input drift (for example population stability index on tenure and monthly charges), live precision and recall once outcomes are known, and probability calibration
-- **Alerts:** [FILL IN: e.g. alert if recall falls more than 5 points or a key feature drifts]
-- **Feedback loop:** customers retained by an offer stop churning, which changes the labels future models learn from, so keep a control group
 
 ## 10. Repository structure
 
